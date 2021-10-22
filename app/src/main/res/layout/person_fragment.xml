@@ -3,16 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
     <Button
         android:id="@+id/update_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/update_list"/>
+    <Button
+        android:id="@+id/add_fragment_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add fragment"
+        android:layout_marginStart="4dp"/>
+</LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
+
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,10 +35,16 @@ class PersonFragment: Fragment() {
 
         val buttonUpdate = view.findViewById<Button>(R.id.update_list)
 
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+        recyclerView.adapter = personFragment
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
+
+
         buttonUpdate.setOnClickListener {
             persons.toMutableList()
                 .apply {
                     //removeAt(2)
+
                     add(5, Person(2, "Artak", 60))
                 }
                 .also {
@@ -46,12 +53,25 @@ class PersonFragment: Fragment() {
             personFragment.submitList(persons)
         }
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.adapter = personFragment
-        if (persons.size > 5){
-            recyclerView.layoutManager = GridLayoutManager(context, 2)
-        } else {
+        val addFragment = view.findViewById<Button>(R.id.add_fragment_button)
+        addFragment.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.container, AlternativeFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+        parentFragmentManager.setFragmentResultListener(REQUESTKEY,viewLifecycleOwner){ _, bundle ->
+
+                persons.toMutableList()
+                    .apply {
+                        add(2,bundle.get(RESULT) as Person)
+                    }
+                    .also {
+                        persons = it
+                    }
+            personFragment.submitList(persons)
             recyclerView.layoutManager = LinearLayoutManager(context)
+                Toast.makeText(context, "${bundle.get(RESULT)}", Toast.LENGTH_LONG).show()
         }
     }
 }
